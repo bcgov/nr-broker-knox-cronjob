@@ -11,6 +11,6 @@ if [ "$(echo $RESPONSE | jq '.error')" != "null" ]; then
     exit 1
 fi
 
-echo "audit-url=$(echo $RESPONSE | jq '.audit')"
+echo "audit-url=$(echo $RESPONSE | jq '.audit')" >> $GITHUB_OUTPUT
 
 echo "Success"
