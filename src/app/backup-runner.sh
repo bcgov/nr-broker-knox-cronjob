@@ -16,7 +16,7 @@ SHASUM=$(sha256sum $BACKUP_FILENAME)
 BACKUP_FILESIZE=$(ls -l $BACKUP_FILENAME | awk '{print $5}')
 
 # Copy backup to s3
-s5cmd cp $BACKUP_FILENAME 's3://${OBJECT_STORAGE_BUCKET}/vault-$week.backup'
+s5cmd cp $BACKUP_FILENAME s3://${OBJECT_STORAGE_BUCKET}/vault-$week.backup
 
 curl -s -X POST $BROKER_URL/v1/intention/action/artifact -H 'X-Broker-Token: '"$ACTION_TOKEN"'' \
     -H 'Content-Type: application/json' \
