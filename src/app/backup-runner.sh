@@ -21,7 +21,8 @@ s5cmd cp $BACKUP_FILENAME s3://${OBJECT_STORAGE_BUCKET}/vault-$week.backup
 curl -s -X POST $BROKER_URL/v1/intention/action/artifact -H 'X-Broker-Token: '"$ACTION_TOKEN"'' \
     -H 'Content-Type: application/json' \
     -d @<(cat backup-artifact.json | \
-        jq ".checksum=\"sha256:$(echo $SHASUM | awk '{print $1}')\" | \
+        jq ".name=\"$BACKUP_FILENAME\" | \
+            .checksum=\"sha256:$(echo $SHASUM | awk '{print $1}')\" | \
             .size=$BACKUP_FILESIZE" \
     )
 
