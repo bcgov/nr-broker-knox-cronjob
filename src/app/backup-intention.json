@@ -1,0 +1,37 @@
+{
+  "event": {
+    "provider": "oneteam-openshift-vault-backup-pipeline",
+    "reason": "Job triggered",
+    "url": "JOB_URL",
+    "transient": true
+  },
+  "actions": [
+    {
+      "action": "backup",
+      "id": "backup",
+      "provision": ["token/self"],
+      "service": {
+        "name": "vsync",
+        "project": "vault",
+        "environment": "production"
+      },
+      "cloud": {
+        "target": {
+          "account": {
+            "id": "7e553b-prod"
+          },
+          "project": {
+            "id": "7e553b"
+          },
+          "provider": "ocp",
+          "service": {
+            "name": "silver"
+          }
+        }
+      }
+    }
+  ],
+  "user": {
+    "name": "objectstore-backup@internal"
+  }
+}
