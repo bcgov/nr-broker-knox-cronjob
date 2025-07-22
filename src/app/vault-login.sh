@@ -18,7 +18,6 @@ if [ "$(echo $WRAPPED_VAULT_TOKEN_JSON | jq '.error')" != "null" ]; then
     echo $WRAPPED_VAULT_TOKEN_JSON | jq '.'
     exit 1
 fi
-echo $WRAPPED_VAULT_TOKEN_JSON
 WRAPPED_VAULT_TOKEN=$(echo $WRAPPED_VAULT_TOKEN_JSON | jq -r '.wrap_info.token')
 echo "::add-mask::$WRAPPED_VAULT_TOKEN"
 
@@ -28,8 +27,6 @@ else
     echo "===> Unwrap token"
     VAULT_TOKEN_JSON=$(curl -s -X POST $VAULT_URL/v1/sys/wrapping/unwrap -H 'X-Vault-Token: '"$WRAPPED_VAULT_TOKEN"'')
     VAULT_TOKEN=$(echo -n $VAULT_TOKEN_JSON | jq -r '.auth.client_token')
-    # echo "VAULT_TOKEN=$VAULT_TOKEN" >> /backup/token
-    # echo $VAULT_TOKEN_JSON
     echo "::add-mask::$VAULT_TOKEN"
     echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV
 fi
