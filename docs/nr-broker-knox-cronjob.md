@@ -1,6 +1,6 @@
-# How nr-broker-knox-cronjob works
+# Architecture and script flow
 
-This document explains in detail how [nr-broker-knox-cronjob](https://github.com/bcgov-nr/nr-broker-knox-cronjob) works.
+This document describes the architecture and script flow of [nr-broker-knox-cronjob](https://github.com/bcgov-nr/nr-broker-knox-cronjob).
 
 ## Container startup
 

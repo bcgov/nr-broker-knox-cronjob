@@ -2,7 +2,7 @@
 
 ## Documentation
 
-- [How it works](docs/nr-broker-knox-cronjob.md) — detailed walkthrough of the intention lifecycle, Vault token provisioning, and script orchestration
+- [Architecture and script flow](docs/nr-broker-knox-cronjob.md) — detailed walkthrough of the intention lifecycle, Vault token provisioning, and script orchestration
 
 ## Local Testing with Podman
 
