@@ -81,8 +81,8 @@ The script then unwraps it by POSTing to `$VAULT_URL/v1/sys/wrapping/unwrap`, yi
 
 Uses `VAULT_TOKEN` to:
 
-1. **Snapshot Vault's raft storage** via `GET $VAULT_URL/v1/sys/storage/raft/snapshot`, saving it to `/backup/vault-<week>.backup` (rotates through 5 weekly files)
-2. **Copy the snapshot to S3** using `s5cmd` and the `OBJECT_STORAGE_BUCKET` / AWS credentials from the container environment
+1. **Snapshot Vault's raft storage** via `GET $VAULT_URL/v1/sys/storage/raft/snapshot`, saving it to `/backup/vault-<week>-<hour>.backup` (five weekly slots, with one local file per hour in each slot)
+2. **Copy the snapshot to S3** using `s5cmd` and the `OBJECT_STORAGE_BUCKET` / AWS credentials from the container environment. S3 objects are named `vault-backup-<YYYYMMDD-HHMMSS>.raft`, preserving each upload with a timestamped name.
 3. **Record the artifact** by POSTing to `/v1/intention/action/artifact` with the filename, SHA-256 checksum, and file size — this creates a traceable record in Broker of exactly what was produced
 
 ---
