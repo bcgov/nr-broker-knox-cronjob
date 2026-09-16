@@ -1,5 +1,9 @@
 # nr-broker-knox-cronjob
 
+## Documentation
+
+- [Architecture and script flow](docs/nr-broker-knox-cronjob.md) — detailed walkthrough of the intention lifecycle, Vault token provisioning, and script orchestration
+
 ## Local Testing with Podman
 
 1. Copy `setenv-tmpl.sh` to `setenv-local.sh`. Add values (See deployment repo). (`cp setenv-tmpl.sh setenv-local.sh`)
