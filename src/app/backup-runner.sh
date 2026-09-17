@@ -7,10 +7,12 @@ prune_backups() {
   local backup_day
   local cutoff_day
   local cutoff_hour
+  local current_epoch
   declare -A retained_days
 
-  cutoff_day=$(date -d '7 days ago' +'%Y%m%d')
-  cutoff_hour=$(date -d '24 hours ago' +'%Y%m%d%H%M%S')
+  current_epoch=$(date +'%s')
+  cutoff_day=$(date -d "@$((current_epoch - 7 * 86400))" +'%Y%m%d')
+  cutoff_hour=$(date -d "@$((current_epoch - 24 * 3600))" +'%Y%m%d%H%M%S')
 
   while IFS= read -r backup_file; do
     backup_day=${backup_file:6:8}
