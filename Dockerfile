@@ -1,4 +1,4 @@
-FROM ${REPO_LOCATION}alpine:3.22.1
+FROM ${REPO_LOCATION}alpine:3.22.5
 
 ### --------------------------------- Install s5cmd
 # Install curl, download and extract s5cmd binary
