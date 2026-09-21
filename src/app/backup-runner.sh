@@ -4,27 +4,47 @@ BACKUP_FILENAME="/backup/vault-$timestamp.backup"
 
 prune_backups() {
   local backup_file
-  local backup_day
-  local cutoff_day
-  local cutoff_hour
+  local ts_compact
+  local day
   local current_epoch
-  declare -A retained_days
+  local cutoff_24h
+  local cutoff_10d
+  local files=()
+  declare -A keep_daily
 
   current_epoch=$(date +'%s')
-  cutoff_day=$(date -d "@$((current_epoch - 7 * 86400))" +'%Y%m%d')
-  cutoff_hour=$(date -d "@$((current_epoch - 24 * 3600))" +'%Y%m%d%H%M%S')
+  cutoff_24h=$(date -d "@$((current_epoch - 24 * 3600))" +'%Y%m%d%H%M%S')
+  cutoff_10d=$(date -d "@$((current_epoch - 10 * 86400))" +'%Y%m%d%H%M%S')
 
   while IFS= read -r backup_file; do
-    backup_day=${backup_file:6:8}
-
-    if [[ $backup_day < $cutoff_day ]]; then
-      rm "/backup/$backup_file" "/backup/${backup_file%.backup}-date.txt"
-    elif [[ $backup_file < "vault-$cutoff_hour.backup" && -z ${retained_days[$backup_day]} ]]; then
-      retained_days[$backup_day]=1
-    elif [[ $backup_file < "vault-$cutoff_hour.backup" && -n ${retained_days[$backup_day]} ]]; then
-      rm "/backup/$backup_file" "/backup/${backup_file%.backup}-date.txt"
-    fi
+    files+=("$backup_file")
   done < <(find /backup -maxdepth 1 -type f -name 'vault-????????-??????.backup' -exec basename {} \; | sort)
+
+  # First pass: record the most recent backup per day (24h-10d)
+  for backup_file in "${files[@]}"; do
+    ts_compact="${backup_file:6:8}${backup_file:15:6}"
+    day=${backup_file:6:8}
+
+    if [[ $ts_compact > $cutoff_24h ]]; then
+      continue
+    elif [[ $ts_compact > $cutoff_10d ]]; then
+      keep_daily[$day]=$backup_file
+    fi
+  done
+
+  # Second pass: delete anything that is not within 24h or the retained daily backup
+  for backup_file in "${files[@]}"; do
+    ts_compact="${backup_file:6:8}${backup_file:15:6}"
+    day=${backup_file:6:8}
+
+    if [[ $ts_compact > $cutoff_24h ]]; then
+      continue
+    elif [[ $ts_compact > $cutoff_10d ]]; then
+      [[ ${keep_daily[$day]} == "$backup_file" ]] || rm "/backup/$backup_file"
+    else
+      rm "/backup/$backup_file"
+    fi
+  done
 }
 
 echo "===> Backup start"
@@ -36,7 +56,6 @@ curl \
   $VAULT_URL/v1/sys/storage/raft/snapshot > \
   $BACKUP_FILENAME
 
-date +'%Y-%m-%d %T' > "${BACKUP_FILENAME%.backup}-date.txt"
 SHASUM=$(sha256sum $BACKUP_FILENAME)
 BACKUP_FILESIZE=$(ls -l $BACKUP_FILENAME | awk '{print $5}')
 
