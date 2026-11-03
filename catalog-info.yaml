@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+spec:
+  system: nr-broker
+  type: service
+  lifecycle: production
+  owner: Oscar
+metadata:
+  name: nr-broker-knox-cronjob
+  description: NR Broker Knox Cronjob
+  title: NR Broker Knox Cronjob
+  tags:
+    - ""
+  annotations:
+    license: Apache-2.0
+    github.com/project-slug: bcgov/nr-broker-knox-cronjob
+    playbook.io.nrs.gov.bc.ca/instances: '[{"env":"development"},{"env":"test"},{"env":"production"}]'
+    composer.io.nrs.gov.bc.ca/generators: backstage
