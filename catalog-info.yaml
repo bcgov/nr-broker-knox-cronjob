@@ -14,4 +14,3 @@ metadata:
   annotations:
     license: Apache-2.0
     github.com/project-slug: bcgov/nr-broker-knox-cronjob
-    composer.io.nrs.gov.bc.ca/generators: backstage
