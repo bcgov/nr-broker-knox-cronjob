@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 spec:
   system: nr-broker
-  type: service
+  type: library
   lifecycle: production
   owner: Oscar
 metadata:
@@ -14,5 +14,4 @@ metadata:
   annotations:
     license: Apache-2.0
     github.com/project-slug: bcgov/nr-broker-knox-cronjob
-    playbook.io.nrs.gov.bc.ca/instances: '[{"env":"development"},{"env":"test"},{"env":"production"}]'
     composer.io.nrs.gov.bc.ca/generators: backstage
