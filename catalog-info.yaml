@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+spec:
+  system: nr-broker
+  type: library
+  lifecycle: production
+  owner: Oscar
+metadata:
+  name: nr-broker-knox-cronjob
+  description: NR Broker Knox Cronjob
+  title: NR Broker Knox Cronjob
+  tags:
+    - ""
+  annotations:
+    license: Apache-2.0
+    github.com/project-slug: bcgov/nr-broker-knox-cronjob
